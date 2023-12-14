@@ -1,11 +1,7 @@
 
 const Joi = require("joi");
 const Geolocation = require('../../models/Geolocation');
-
-const geolocationSchema = Joi.object({
-  latitude: Joi.number().required(),
-  longitude: Joi.number().required(),
-});
+const geolocationSchema = require('../../schemas/geolocationSchema/geolocationSchema');
 
 const saveLocation = async (req, res) => {
   const { error } = geolocationSchema.validate(req.body);
