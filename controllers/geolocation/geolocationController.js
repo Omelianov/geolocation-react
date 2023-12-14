@@ -1,8 +1,21 @@
 
+const Joi = require("joi");
 const Geolocation = require('../../models/Geolocation');
 
+const geolocationSchema = Joi.object({
+  latitude: Joi.number().required(),
+  longitude: Joi.number().required(),
+});
+
 const saveLocation = async (req, res) => {
-  const { userId, latitude, longitude } = req.body;
+  const { error } = geolocationSchema.validate(req.body);
+
+  if (error) {
+    return res.status(400).json({ error: error.details[0].message });
+  }
+
+  const { latitude, longitude } = req.body;
+  const userId = req.user.id; // Obtain userId from the authenticated user
 
   try {
     // Save the location data to the database
@@ -11,7 +24,6 @@ const saveLocation = async (req, res) => {
       coordinates: {
         type: 'Point',
         coordinates: [longitude, latitude],
-        // coordinates: [parseFloat(longitude), parseFloat(latitude)],
       },
     });
 
@@ -22,7 +34,6 @@ const saveLocation = async (req, res) => {
   }
 };
 
-module.exports = {
-  saveLocation,
-};
+module.exports = saveLocation;
+
 

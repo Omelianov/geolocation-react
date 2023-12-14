@@ -8,7 +8,7 @@ const { geolocationSchema } = require('../../models/Geolocation'); // Import the
 
 // Geolocation route to handle saving location data
 router.post(
-  '/geolocations',
+  '/',
   authentication, // Ensure the user is authenticated
   validateBody(geolocationSchema), // Validate the request body using geolocationSchema
   geolocationController.saveLocation
