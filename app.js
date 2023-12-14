@@ -5,7 +5,7 @@ const app = express();
 require('dotenv').config();
 
 const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short';
-const { usersRouter } = require('./routes');
+const { usersRouter, geolocationsRouter } = require('./routes');
 
 
 app.use(logger(formatsLogger));
@@ -14,7 +14,7 @@ app.use(express.json());
 
 // Routes
 app.use('/users', usersRouter);
-
+app.use('/geolocations', geolocationsRouter);
 
 app.use((req, res) => {
   res.status(404).json({ message: 'Not found' });

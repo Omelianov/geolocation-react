@@ -5,7 +5,7 @@ const { DB_HOST, PORT = 3030 } = process.env;
 mongoose.set("strictQuery", false);
 
 mongoose
-  .connect(DB_HOST)
+  .connect(DB_HOST, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log("Connected to DB"))
   .then(() =>
     app.listen(PORT, () => {
