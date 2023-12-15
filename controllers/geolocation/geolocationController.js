@@ -1,35 +1,52 @@
 
-const Joi = require("joi");
-const Geolocation = require('../../models/Geolocation');
-const geolocationSchema = require('../../schemas/geolocationSchema/geolocationSchema');
+const Geolocation = require('../../models/geolocations');
 
-const saveLocation = async (req, res) => {
-  const { error } = geolocationSchema.validate(req.body);
-
-  if (error) {
-    return res.status(400).json({ error: error.details[0].message });
-  }
-
-  const { latitude, longitude } = req.body;
-  const userId = req.user.id; // Obtain userId from the authenticated user
+// Controller to save geolocation data
+const saveGeolocation = async (req, res) => {
+  console.log('Save Geolocation Request Received');
+  console.log(req.user);
+  const { userId } = req.user; // Extract userId from logged-in user data
+  const { coordinates } = req.body;
 
   try {
-    // Save the location data to the database
-    await Geolocation.create({
-      userId,
-      coordinates: {
-        type: 'Point',
-        coordinates: [longitude, latitude],
-      },
-    });
+    // Find or create a user's geolocation record
+    const geolocation = await Geolocation.findOneAndUpdate(
+      { userId },
+      { coordinates },
+      { upsert: true, new: true }
+    );
 
-    res.status(201).json({ message: 'Location data saved successfully' });
+    res.status(201).json(geolocation);
   } catch (error) {
-    console.error('Error saving location data:', error);
+    console.error('Error in saveGeolocation:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
-module.exports = saveLocation;
+// Controller to get the latest geolocation data by userId
+const getLatestGeolocationByUserId = async (req, res) => {
+  console.log('Get Latest Geolocation Request Received');
+  const userId = req.user.id; // Extract userId from logged-in user data
+
+  try {
+    // Find the latest geolocation record for the user
+    const geolocation = await Geolocation.findOne({ userId }).sort({ createdAt: -1 }).limit(1);
+
+    if (!geolocation) {
+      res.status(404).json({ error: 'No geolocation data found for the user' });
+      return;
+    }
+
+    res.status(200).json(geolocation);
+  } catch (error) {
+    console.error('Error in getLatestGeolocationByUserId:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+module.exports = {
+  saveGeolocation,
+  getLatestGeolocationByUserId,
+};
 
 

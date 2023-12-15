@@ -20,8 +20,10 @@ const authentication = async (req, res, next) => {
       throw RequestError(401);
     }
     req.user = user;
+    console.log('User information:', req.user);
     next();
   } catch (error) {
+    console.error('Authentication error:', error);
     if (!error.status) {
       error.status = 401;
       error.message = "Unauthorized error";
