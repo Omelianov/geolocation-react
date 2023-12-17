@@ -2,9 +2,9 @@ const { Schema } = require("mongoose");
 
 const geolocationMongoSchema = new Schema(
   {
-    userId: {
+    owner: {
       type: Schema.Types.ObjectId,
-      ref: "User",
+      ref: 'user',
       required: true,
     },
     type: {
@@ -18,7 +18,5 @@ const geolocationMongoSchema = new Schema(
   },
   { versionKey: false, timestamps: true }
 );
-
-geolocationMongoSchema.index({ userId: 1 }, { unique: true });
 
 module.exports = geolocationMongoSchema;

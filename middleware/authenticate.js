@@ -19,6 +19,7 @@ const authentication = async (req, res, next) => {
     if (!user || !user.token || user.token !== token) {
       throw RequestError(401);
     }
+    console.log('Decoded Token:', jwt.verify(token, SECRET_KEY));
     req.user = user;
     console.log('User information:', req.user);
     next();
