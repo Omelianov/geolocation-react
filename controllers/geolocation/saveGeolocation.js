@@ -5,16 +5,17 @@ const saveGeolocation = async ({ body, user: { _id, name: userName } }, res) => 
     if (!_id) {
       throw new Error('User ID is null');
     }
-    const { coordinates } = body;
+    const { coordinates, team } = body;
 
     let geolocation = await Geolocation.findOne({ owner: _id });
 
     if (!geolocation) {
       // Create a new geolocation if it doesn't exist for the user
-      geolocation = await Geolocation.create({ owner: _id, name: userName, coordinates, ...body });
+      geolocation = await Geolocation.create({ owner: _id, name: userName, coordinates, team, ...body });
     } else {
       // Update existing geolocation
       geolocation.coordinates = coordinates;
+      geolocation.team = team;
       await geolocation.save();
     }
 
