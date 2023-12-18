@@ -1,6 +1,6 @@
 
 const express = require('express');
-const geolocationCtrl = require('../../controllers/geolocation/geolocationController');
+const geolocationCtrl = require('../../controllers/geolocation');
 const authentication = require('../../middleware/authenticate');
 
 const router = express.Router();
