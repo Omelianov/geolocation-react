@@ -1,17 +1,16 @@
-const { Schema } = require("mongoose");
-
-const { handleSaveErrors } = require('../../helpers')
+const mongoose = require("mongoose");
+const { Schema } = mongoose;
 
 const geolocationMongoSchema = new Schema(
   {
     name: {
       type: String,
-      ref: 'name',
+      required: true,
     },
     owner: {
       type: Schema.Types.ObjectId,
-      ref: 'user',
       required: true,
+      // unique: true,
     },
     type: {
       type: String,
@@ -28,7 +27,6 @@ const geolocationMongoSchema = new Schema(
     },
     team: {
       type: String,
-      ref: 'team',
       enum: [
         'Red',
         'Green',
@@ -45,4 +43,6 @@ const geolocationMongoSchema = new Schema(
 
 geolocationMongoSchema.post('save', handleSaveErrors);
 
-module.exports = geolocationMongoSchema;
+// Export the model with a dynamic collection name
+module.exports = (ownerId) =>
+  mongoose.model(`Geolocation_${ownerId}`, geolocationMongoSchema);

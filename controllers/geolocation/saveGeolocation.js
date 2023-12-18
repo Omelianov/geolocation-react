@@ -10,22 +10,24 @@ const saveGeolocation = async ({ body, user: { _id, name: userName } }, res) => 
     let geolocation = await Geolocation.findOne({ owner: _id });
 
     if (!geolocation) {
+      // Create a new geolocation if it doesn't exist for the user
       geolocation = await Geolocation.create({ owner: _id, name: userName, coordinates, ...body });
     } else {
+      // Update existing geolocation
       geolocation.coordinates = coordinates;
-
-      // Set the name only if it's available in the user object
-      if (userName) {
-        geolocation.name = userName;
-      }
-
       await geolocation.save();
     }
 
     res.status(200).json(geolocation);
   } catch (error) {
-    console.error('Error in saveGeolocation:', error);
-    res.status(500).json({ error: error.message || 'Internal Server Error' });
+    if (error.code === 11000 && error.keyPattern && error.keyPattern.owner === 1) {
+      // Handle duplicate key error (owner already exists)
+      console.error('Duplicate key error:', error);
+      res.status(409).json({ error: 'Duplicate key error' });
+    } else {
+      console.error('Error in saveGeolocation:', error);
+      res.status(500).json({ error: error.message || 'Internal Server Error' });
+    }
   }
 };
 
