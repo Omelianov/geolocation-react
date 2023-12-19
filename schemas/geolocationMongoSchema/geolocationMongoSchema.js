@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
+const handleSaveErrors = require('../../helpers/handleSaveErrors')
 
 const geolocationMongoSchema = new Schema(
   {
@@ -43,6 +44,5 @@ const geolocationMongoSchema = new Schema(
 
 geolocationMongoSchema.post('save', handleSaveErrors);
 
-// Export the model with a dynamic collection name
-module.exports = (ownerId) =>
-  mongoose.model(`Geolocation_${ownerId}`, geolocationMongoSchema);
+
+module.exports = geolocationMongoSchema;
