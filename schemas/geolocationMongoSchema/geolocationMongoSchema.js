@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 const handleSaveErrors = require('../../helpers/handleSaveErrors')
 
-const geolocationMongoSchema = new Schema(
+const geolocationMongoSchema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -10,8 +10,9 @@ const geolocationMongoSchema = new Schema(
     },
     owner: {
       type: Schema.Types.ObjectId,
+      ref: "user",
       required: true,
-      // unique: true,
+
     },
     type: {
       type: String,
@@ -42,7 +43,7 @@ const geolocationMongoSchema = new Schema(
   { versionKey: false, timestamps: true }
 );
 
-geolocationMongoSchema.post('save', handleSaveErrors);
 
+geolocationMongoSchema.post('save', handleSaveErrors);
 
 module.exports = geolocationMongoSchema;
