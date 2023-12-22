@@ -18,6 +18,7 @@ app.use(express.json());
 // Routes
 app.use('/users', usersRouter);
 app.use('/geolocations', authentication, geolocationsRouter);
+app.use('/geolocations/all', geolocationsRouter);
 
 app.use((req, res) => {
   res.status(404).json({ message: 'Not found' });

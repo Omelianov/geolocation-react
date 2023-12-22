@@ -8,7 +8,7 @@ const teamNamesFilePath = path.join(
   'teamNamesList.json'
 );
 
-const getTeamNamesList = async (req, res, next) => {
+const getTeamsNamesList = async (req, res, next) => {
   try {
     const data = await fs.readFile(teamNamesFilePath, 'utf8');
     const teamNamesList = JSON.parse(data);
@@ -18,4 +18,4 @@ const getTeamNamesList = async (req, res, next) => {
   }
 };
 
-module.exports = getTeamNamesList;
+module.exports = getTeamsNamesList;
