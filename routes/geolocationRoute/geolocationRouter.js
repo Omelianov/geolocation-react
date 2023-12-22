@@ -9,7 +9,7 @@ const router = express.Router();
 router.post('/save', authentication, geolocationCtrl.saveGeolocation);
 
 // GET all /getTeamsNamesList
-router.get('/teamsnames', authentication, geolocationCtrl.getTeamsNamesList);
+router.get('/teamsnames', geolocationCtrl.getTeamsNamesList);
 
 // Route to get the latest geolocation data by userId
 router.get('/getlatest', authentication, geolocationCtrl.getLatestGeolocationByUserId);
@@ -17,8 +17,8 @@ router.get('/getlatest', authentication, geolocationCtrl.getLatestGeolocationByU
 // GET all geolocations (no authentication required for this route)
 router.get('/all', geolocationCtrl.getAllGeolocations);
 
-// GET all geolocations by authenticated user
-router.get('/allauth', authentication, geolocationCtrl.getAllGeolocations);
+// // GET all geolocations by authenticated user
+// router.get('/allauth', authentication, geolocationCtrl.getAllGeolocations);
 
 // GET all geolocations sorted by team
 router.get('/teams', authentication, geolocationCtrl.getTeams);

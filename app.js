@@ -3,9 +3,9 @@ const logger = require('morgan');
 const cors = require('cors');
 const app = express();
 require('dotenv').config();
-const { usersRouter } = require('./routes');
+const usersRouter = require('./routes/usersRoutes/users');
 const geolocationsRouter = require('./routes/geolocationRoute/geolocationRouter');
-const authentication = require('./middleware/authenticate');
+// const authentication = require('./middleware/authenticate');
 
 const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short';
 
@@ -17,8 +17,8 @@ app.use(express.json());
 
 // Routes
 app.use('/users', usersRouter);
-app.use('/geolocations', authentication, geolocationsRouter);
-app.use('/geolocations/all', geolocationsRouter);
+app.use('/geolocations', geolocationsRouter);
+
 
 app.use((req, res) => {
   res.status(404).json({ message: 'Not found' });

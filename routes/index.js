@@ -1,5 +1,3 @@
 const usersRouter = require("./usersRoutes/users");
 
-module.exports = {
-  usersRouter
-};
+module.exports = usersRouter;

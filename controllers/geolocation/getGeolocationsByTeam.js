@@ -1,3 +1,6 @@
+
+const Geolocation = require('../../models/geolocations');
+
 const getGeolocationsByTeam = async (req, res) => {
   const teamColor = req.params.teamColor;
 
@@ -6,6 +9,7 @@ const getGeolocationsByTeam = async (req, res) => {
     const geolocations = await Geolocation.find({ team: { $regex: new RegExp(teamColor, 'i') } });
     res.json(geolocations);
   } catch (error) {
+    console.error('Error in getGeolocationsByTeam:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
